@@ -1,0 +1,832 @@
+/* ESTILOS.CSS UNIFICADO
+  Tema principal de FLACAJOYAS (Claro/Morado)
+  + Clases de layout de styles.css (adaptadas al tema claro)
+*/
+:root {
+    --bg: #f6f6f6;
+    --paper: #ffffff;
+    --ink: #424242;
+    --ink-2: #6b6b6b;
+    --brand: #56585c;
+    --border: #dfdfdf;
+    --accent: #2f2f2f;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .06);
+    --primary: #5A2D82;
+    /* MORADO CORPORATIVO */
+    --primary-600: #4a216d;
+
+    /* Variables de styles.css (adaptadas) */
+    --accent-2: #C9A368;
+    /* Dorado (mantenido) */
+    --ok: #00b894;
+    --warn: #fdcb6e;
+    --err: #e17055;
+}
+
+* {
+    box-sizing: border-box
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--bg)
+}
+
+a {
+    text-decoration: none;
+    color: inherit
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 24px
+}
+
+/* --- HEADER UNIFICADO --- */
+/* Estilo para .topbar (de FLACAJOYAS.html) */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(246, 246, 246, .9);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(6px)
+}
+
+/* Estilo para .header (de tienda.html, etc.) */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(246, 246, 246, .9);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(6px)
+}
+
+/* Contenido del header (para .nav y .header-inner) */
+.nav,
+.header-inner {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    gap: 16px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 24px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+}
+
+.brand img {
+    height: 36px
+}
+
+.brand span,
+.brand {
+    /* .brand sin span para tienda.html */
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+    color: var(--brand)
+}
+
+/* Punto morado de tienda.html */
+.brand .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--primary);
+    /* Morado */
+}
+
+
+.spacer {
+    flex: 1
+}
+
+/* Menú de FLACAJOYAS.html */
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 20px
+}
+
+.menu a {
+    font-weight: 600;
+    color: #2f2f30
+}
+
+.menu a:hover {
+    color: var(--primary)
+}
+
+/* Nav de tienda.html */
+.nav {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.nav a {
+    opacity: .9;
+    padding: 6px 10px;
+    border-radius: 8px
+}
+
+.nav a:hover {
+    background: rgba(90, 45, 130, .08);
+    /* Morado claro */
+    opacity: 1
+}
+
+
+/* --- BUSCADOR (de styles.css adaptado) --- */
+.search {
+    flex: 1;
+    display: flex;
+    gap: 8px;
+    max-width: 520px;
+    margin: 0 12px;
+    justify-content: flex-end;
+}
+
+
+.search input {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+    height: 44px;
+}
+
+/* --- HERO --- */
+.hero {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    min-height: 68vh;
+    background: radial-gradient(1200px 600px at 50% -10%, #fff, transparent 70%), var(--bg)
+}
+
+.hero-card {
+    /* De FLACAJOYAS.html */
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 48px 28px;
+    width: min(960px, 92%)
+}
+
+.logo-hero {
+    width: 80%;
+    max-width: 500px;
+    margin-bottom: 18px
+}
+
+.hero h1 {
+    margin: 8px 0 10px;
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 52px);
+    color: var(--brand)
+}
+
+.hero p {
+    margin: 0 auto 16px;
+    max-width: 680px;
+    color: var(--ink-2)
+}
+
+.cta {
+    /* Botón principal del hero */
+    display: inline-block;
+    margin-top: 6px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .03em
+}
+
+.cta:hover {
+    background: var(--primary-600)
+}
+
+
+/* --- TARJETA GENÉRICA (.card) --- */
+/* MODIFICADO: .card ahora es genérico (para productos, modales, etc.)
+  Se quita min-height y width fijos.
+*/
+.card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 24px;
+    /* Estilos de .product-card (para tienda.html) */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card.hover:hover {
+    transform: translateY(-2px);
+    transition: transform .2s ease;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, .07);
+}
+
+
+/* --- MODAL (de Estilos.css) --- */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    place-items: center;
+    background: rgba(0, 0, 0, .35);
+    z-index: 100;
+    padding: 20px
+}
+
+.modal[aria-hidden="false"] {
+    display: grid
+}
+
+/* Estilos específicos para LA tarjeta del modal */
+.modal .card {
+    padding: 26px;
+    min-height: 600px;
+    width: min(440px, 92%);
+    /* Añadidos de EstilosDeCartas.css para layout de modal */
+    position: relative;
+    max-height: 90vh;
+    overflow: hidden;
+    /* No es un product-card, resetea gap */
+    gap: 0;
+}
+
+.x {
+    float: right;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer
+}
+
+
+/* --- ESTILOS DE EstilosDeCartas.css FUSIONADOS --- */
+/* Secciones de FLACAJOYAS.html (ahora usan el estilo .card genérico) */
+#catalogo div,
+#quienes-somos div,
+#contacto div {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    /* Asegura que ocupe el espacio del contenedor */
+}
+
+#catalogo,
+#quienes-somos,
+#contacto {
+    margin: 32px auto;
+    /* Centrado */
+    width: min(960px, 92%);
+}
+
+#contacto {
+    margin: 24px auto 56px;
+}
+
+#catalogo div h2,
+#quienes-somos div h2,
+#contacto div h2 {
+    margin: 0 0 8px;
+    font-family: 'Playfair Display', serif;
+    color: var(--brand);
+    /* Color de texto de light theme */
+}
+
+.tarjetaContenidos {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    margin: auto;
+}
+
+
+/* --- COMPONENTES ADAPTADOS DE styles.css --- */
+
+/* Títulos H1, H2 (para tienda.html, etc.) */
+.h1 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 40px;
+    line-height: 1.1;
+    margin: 0 0 8px;
+    color: var(--brand);
+}
+
+.h2 {
+    display: flex;
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 28px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    color: var(--brand);
+    justify-content: center;
+}
+
+.muted {
+    color: var(--ink-2);
+    font-size: .95rem;
+}
+
+/* Grids (para tienda.html, etc.) */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px
+}
+
+/* Componentes de producto (tienda.html) */
+.price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--ink);
+}
+
+.old {
+    opacity: .6;
+    text-decoration: line-through;
+    font-weight: 400;
+    margin-left: 6px
+}
+
+.tag {
+    font-size: 12px;
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    border-radius: 999px;
+    opacity: .9;
+    background: var(--bg);
+    color: var(--ink-2);
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    border: 1px solid var(--border);
+    opacity: .85;
+}
+
+.badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap
+}
+
+/* Filtros (tienda.html) */
+.filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 8px 0 12px
+}
+
+.select,
+select {
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    color: var(--ink);
+    height: 44px;
+    /* Consistencia */
+    font-family: inherit;
+}
+
+/* Filas (usado en múltiples páginas) */
+.row {
+    display: flex;
+    gap: 12px;
+    align-items: center
+}
+
+.row.wrap {
+    flex-wrap: wrap
+}
+
+/* Pills (tienda.html) */
+.pill {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    cursor: pointer
+}
+
+.pill.active {
+    background: rgba(90, 45, 130, .1);
+    /* Morado claro */
+    border-color: rgba(90, 45, 130, .3);
+    /* Borde morado */
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Tabla (carrito.html) */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 16px;
+}
+
+.table th,
+.table td {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 8px;
+    text-align: left
+}
+
+.table th {
+    color: var(--ink-2);
+}
+
+/* Notice (admin.html) */
+.notice {
+    padding: 12px;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    background: #fff;
+}
+
+/* Input (genérico de styles.css, adaptado) */
+.input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    color: var(--ink);
+    height: 44px;
+    font-family: inherit;
+}
+
+textarea.input {
+    height: auto;
+    min-height: 80px;
+}
+
+
+/* Skeleton (tienda.html) */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0, #e9e9e9, #f0f0f0);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    min-height: 120px;
+    border-radius: 12px
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0
+    }
+
+    100% {
+        background-position: -200% 0
+    }
+}
+
+/* Toast (notificaciones) */
+.toast {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    background: #333;
+    /* Oscuro para contraste */
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: none;
+    z-index: 200;
+    box-shadow: var(--shadow);
+}
+
+.toast.show {
+    display: block
+}
+
+
+/* --- BOTONES UNIFICADOS --- */
+/* Botón de Icono (FLACAJOYAS.html) */
+.icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    transition: .2s;
+    background: transparent;
+    border: 1px solid transparent
+}
+
+.icon-btn:hover {
+    background: #fff;
+    border-color: var(--border)
+}
+
+.icon-user svg {
+    width: 22px;
+    height: 22px
+}
+
+/* Botón genérico (.btn) */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-weight: 700;
+    cursor: pointer;
+    background: var(--paper);
+    /* Fondo claro */
+    color: var(--ink);
+    /* Texto oscuro */
+    transition: .2s;
+    height: 44px;
+    /* Consistencia */
+}
+
+.btn:hover {
+    filter: brightness(.97);
+    border-color: #ccc;
+}
+
+.btn.block {
+    width: 100%
+}
+
+/* Botón Primario (Morado) */
+.btn.primary,
+a.cta {
+    /* Incluye el .cta del hero */
+    background: var(--primary);
+    color: #fff;
+    border-color: transparent;
+}
+
+.btn.primary:hover,
+a.cta:hover {
+    background: var(--primary-600);
+    filter: brightness(1);
+}
+
+.btn.gold {
+    background: var(--primary);
+    color: #ffffff;
+    border: 0;
+}
+
+.btn.gold:hover {
+    filter: brightness(1.05);
+}
+
+.btn.ghost {
+    background: #fff;
+    color: var(--primary);
+    border-color: var(--primary)
+}
+
+.btn.ghost:hover {
+    background: rgba(90, 45, 130, .05);
+    /* Morado muy claro */
+    filter: brightness(1);
+}
+
+
+/* --- FORMULARIOS (de Estilos.css) --- */
+.field {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 12px
+}
+
+.field input,
+.field textarea {
+    height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0 12px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: inherit;
+}
+
+.field textarea {
+    height: auto;
+    min-height: 80px;
+    padding: 10px 12px;
+}
+
+.link {
+    color: var(--primary);
+    font-weight: 600
+}
+
+.pwrap {
+    position: relative
+}
+
+.eye {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: .65
+}
+
+/* Tabs (login/register/forgot) */
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+/* Layout del modal */
+.separadorDialogoBoton {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.contenedorDeDialogos {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    padding-bottom: 70px;
+}
+
+#botonesDeAccion {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid var(--border);
+    background: #fafafa;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#botonesDeAccion div {
+    margin: 5px;
+}
+
+
+/* --- FOOTER UNIFICADO --- */
+footer,
+.footer {
+    /* Para .footer de styles.css */
+    margin-top: 56px;
+    border-top: 1px solid var(--border);
+    background: #fff;
+    padding: 40px 0;
+}
+
+.copyright {
+    margin-left: 100px;
+    padding: 16px 0;
+    color: var(--ink-2);
+    font-size: .9rem
+}
+
+/* Grid de footer (de styles.css) */
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 24px;
+}
+
+.footer-grid small {
+    color: var(--ink-2);
+}
+
+#redes-sociales {
+    display: flex;
+    justify-content: center;
+}
+
+.iconos-redes {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 16px;
+}
+
+.product-card-img {
+    width: 100%;
+    height: 180px;
+    /* Altura fija para normalizar las tarjetas */
+    object-fit: cover;
+    /* Clave para que la imagen cubra sin deformarse */
+    border-radius: 12px;
+    /* Ligeramente menos que la card */
+    margin-bottom: 4px;
+    background-color: #f0f0f0;
+    /* Color de fondo para 'skeleton' */
+}
+
+.product-detail-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    /* Forzamos la imagen a ser cuadrada */
+    object-fit: cover;
+    border-radius: 12px;
+    background-color: #f0f0f0;
+}
+
+/* --- RESPONSIVE (de styles.css) --- */
+@media(max-width:980px) {
+    .hero .grid {
+        grid-template-columns: 1fr
+    }
+
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+    .kpis {
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width:640px) {
+    .grid-3 {
+        grid-template-columns: 1fr
+    }
+
+    .grid-4 {
+        grid-template-columns: 1fr
+    }
+
+    .search {
+        max-width: 100%
+    }
+
+    .h1 {
+        font-size: 32px
+    }
+
+    /* Oculta menú de texto en móvil (FLACAJOYAS.html) */
+    .menu {
+        display: none;
+    }
+
+    /* Muestra hamburguesa (necesitarías JS para hacerla funcionar) */
+    .hamburger {
+        display: block
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}

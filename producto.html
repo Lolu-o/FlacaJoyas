@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Producto — Las Flacas Joyas</title>
+  <link rel="stylesheet" href="Estilos.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Ir al inicio">
+        <span>LA&nbsp;FLACA&nbsp;JOYAS®</span>
+      </a>
+
+      <div class="search"><a class="btn" href="carrito.html" aria-label="Ver carrito"
+          style="padding: 0 12px; font-size: 1.2rem;">🛒</a>
+      </div>
+
+      <nav class="menu" aria-label="Principal">
+        <a href="tienda.html">Tienda</a>
+        <a href="colecciones.html">Colecciones</a>
+        <a href="blog.html">Blog</a>
+        <a href="ayuda.html">Ayuda</a>
+        <a href="nosotros.html">Nosotros</a>
+      </nav>
+
+      <a href="cuenta.html" class="icon-btn icon-user" aria-label="Abrir cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="pdp" class="grid-3"></div>
+    <section class="card">
+      <strong>Cuidados</strong>
+      <p class="muted">Evita perfumes directos. Guarda en bolsa hermética. Limpia con paño de microfibra.</p>
+    </section>
+    <section>
+      <h2 class="h2">Combínalo con</h2>
+      <div id="combo" class="grid-4"></div>
+    </section>
+  </main>
+
+  <div class="toast"></div>
+  <script src="app.js"></script>
+  <script>
+    const slug = getParam('slug');
+    const p = getProductBySlug(slug);
+    const pdp = document.getElementById('pdp');
+    if (!p) { pdp.innerHTML = '<p>No encontrado</p>'; } else {
+      const firstSku = p.variantes[0].sku;
+
+      const imgUrl = (p.media && p.media.length > 0) ? p.media[0].url : 'assets/placeholder.jpg';
+      const imgAlt = (p.media && p.media.length > 0) ? p.media[0].alt : p.nombre;
+
+      pdp.innerHTML = `
+      
+      <div class="card" style="padding: 10px;">
+        <img class="product-detail-img" src="${imgUrl}" alt="${imgAlt}">
+      </div>
+      
+      <div class="card">
+        <h1 class="h1">${p.nombre}</h1>
+        <div class="row"><span class="price">${money(p.precio)}</span> <span class="tag">★ ${p.rating} (${p.reviews})</span></div>
+        <p class="muted">${p.descripcion}</p>
+        <label>Variante</label>
+        <select id="sel">${p.variantes.map(v => `<option value="${v.sku}">${v.material} - ${v.talla} - ${v.color}</option>`).join('')}</select>
+        <div class="row" style="margin-top:10px">
+          <button class="btn primary" id="add">Agregar</button>
+          <button class="btn" id="wish">♡ Wishlist</button>
+        </div>
+        <div class="notice" style="margin-top:10px">
+          <strong>Entrega/retornos:</strong> Envíos a todo Chile vía Starken/Chilexpress. Cambios y devoluciones dentro de 10 días.
+        </div>
+      </div>
+      <div class="card">
+        <strong>Materiales</strong>
+        <p class="muted">Plata 925 certificada / Arcilla polimérica hipoalergénica.</p>
+        <strong>Medidas</strong>
+        <p class="muted">Detalles en fotos con escala real.</p>
+        <strong>Garantía</strong>
+        <p class="muted">3 meses por ley. Sello de autenticidad.</p>
+      </div>
+    `;
+      document.getElementById('add').onclick = () => addToCart(document.getElementById('sel').value, 1);
+      document.getElementById('wish').onclick = () => toggleWishlist(p.id);
+
+      const picks = listProducts({ sort: 'top' }).filter(x => x.id !== p.id).slice(0, 4);
+
+      // --- INICIO MODIFICACIÓN 2: Mostrar imágenes en "Combínalo con" ---
+      document.getElementById('combo').innerHTML = picks.map(x => {
+        // Lógica para obtener la imagen de c/producto 'x'
+        const comboImgUrl = (x.media && x.media.length > 0) ? x.media[0].url : 'assets/placeholder.jpg';
+        const comboImgAlt = (x.media && x.media.length > 0) ? x.media[0].alt : x.nombre;
+
+        return `
+      <a class="card product-card" href="producto.html?slug=${x.slug}">
+        
+        <img class="product-card-img" src="${comboImgUrl}" alt="${comboImgAlt}" loading="lazy">
+        
+        <div class="row" style="justify-content:space-between"><strong>${x.nombre}</strong> <span>${money(x.precio)}</span></div>
+      </a>
+      `}).join('');
+      // --- FIN MODIFICACIÓN 2 ---
+    }
+  </script>
+</body>
+
+</html>

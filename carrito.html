@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carrito — Las Flacas Joyas</title>
+  <link rel="stylesheet" href="Estilos.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Ir al inicio">
+        <span>LA&nbsp;FLACA&nbsp;JOYAS®</span>
+      </a>
+
+      <div class="search"><a class="btn" href="carrito.html" aria-label="Ver carrito"
+          style="padding: 0 12px; font-size: 1.2rem;">🛒</a>
+      </div>
+
+      <nav class="menu" aria-label="Principal">
+        <a href="tienda.html">Tienda</a>
+        <a href="colecciones.html">Colecciones</a>
+        <a href="blog.html">Blog</a>
+        <a href="ayuda.html">Ayuda</a>
+        <a href="nosotros.html">Nosotros</a>
+      </nav>
+      <a href="cuenta.html" class="icon-btn icon-user" aria-label="Abrir cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="h1">Carrito</h1>
+    <div id="cart"></div>
+    <div class="row wrap">
+      <input id="coupon" class="input" placeholder="Cupón (ej: FLACA10)" style="max-width:240px">
+      <button class="btn" id="apply">Aplicar</button>
+      <a class="btn primary" href="checkout.html">Ir a pagar</a>
+    </div>
+  </main>
+
+  <div class="toast"></div>
+  <script src="app.js"></script>
+  <script>
+    function render() {
+      const cart = getCart();
+      if (cart.items.length === 0) { document.getElementById('cart').innerHTML = '<p class="muted">Tu carrito está vacío.</p>'; return; }
+      const rows = cart.items.map(i => `<tr>
+      <td>${i.nombre}</td><td>${i.sku}</td>
+      <td>${i.qty}</td><td>${money(i.precio)}</td>
+      <td><button class="btn" onclick="removeFromCart('${i.sku}');render()">Eliminar</button></td>
+    </tr>`).join('');
+      const t = cartTotals(cart);
+      document.getElementById('cart').innerHTML = `
+      <table class="table">
+        <thead><tr><th>Producto</th><th>SKU</th><th>Cantidad</th><th>Precio</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="row" style="justify-content:flex-end;gap:24px">
+        <div>Subtotal: <strong>${money(t.subtotal)}</strong></div>
+        <div>Descuento: <strong>${money(t.descuento)}</strong></div>
+        <div>Envío estimado: <strong>${money(t.envio)}</strong></div>
+        <div>IVA (incl.): <strong>${money(t.iva)}</strong></div>
+        <div>Total: <strong>${money(t.total)}</strong></div>
+      </div>
+    `;
+    }
+    document.getElementById('apply').onclick = () => {
+      const r = applyCoupon(document.getElementById('coupon').value);
+      if (!r.ok) toast(r.msg); else render();
+    };
+    render();
+  </script>
+</body>
+
+</html>

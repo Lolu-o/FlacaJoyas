@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Las Flacas Joyas — Hecho a mano en Chile</title>
+  <meta name="description" content="Joyas artesanales: plata 925 y arcilla polimérica. Hechas a mano en Chile.">
+  <meta property="og:title" content="Las Flacas Joyas">
+  <meta property="og:description" content="Plata 925, arcilla polimérica, amor por el detalle.">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="Estilos.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="Ir al inicio">
+        <span>LA&nbsp;FLACA&nbsp;JOYAS®</span>
+      </a>
+
+      <div class="search"><a id="miCarrito" class="btn" href="carrito.html" aria-label="Ver carrito"
+          style="padding: 0 12px; font-size: 1.2rem;">🛒</a></div>
+
+      <nav class="menu" aria-label="Principal">
+        <a href="tienda.html">Tienda</a>
+        <a href="colecciones.html">Colecciones</a>
+        <a href="blog.html">Blog</a>
+        <a href="ayuda.html">Ayuda</a>
+        <a href="nosotros.html">Nosotros</a>
+      </nav>
+      <a href="cuenta.html" class="icon-btn icon-user" aria-label="Abrir cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+        </svg>
+      </a>
+      <a id="admin-btn" class="btn gold" href="admin.html" style="display:none;">Admin</a>
+    </div>
+  </header>
+
+  <main id="inicio" class="hero">
+    <section class="hero-card">
+      <img class="logo-hero" src="assets/logo-la-flaca.png" alt="LA FLACA JOYAS" />
+      <h1>Joyas artesanales con carácter</h1>
+      <p>Diseños únicos en arcilla y metales, hechos a mano en Chile.</p>
+      <a href="tienda.html" class="cta">SHOP NOW</a>
+    </section>
+  </main>
+  <section id="quienes-somos">
+    <div>
+      <h2>Quiénes somos</h2>
+      <p class="muted">Taller chileno de joyería artesanal. Piezas hipoalergénicas en pequeños lotes.</p>
+    </div>
+  </section>
+  <div class="container" style="display: grid; gap: 32px; margin-top: 32px;">
+    <section id="redes-sociales">
+      <div>
+        <h1 class="h1">Nuestras redes:</h1>
+        <div class="iconos-redes">
+          <a href="https://www.instagram.com/laflaca_joyas/" target="_blank" rel="noopener noreferrer"
+            aria-label="Visita nuestro Instagram" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              style="color: var(--primary);">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+
+        </div>
+      </div>
+    </section>
+    <section>
+      <h2 class="h2">Best-sellers</h2>
+      <div id="best" class="grid-4"></div>
+    </section>
+
+    <section>
+      <h2 class="h2">Beneficios</h2>
+      <div class="grid-3">
+        <div class="card hover"><strong>Entrega rápida</strong>
+          <p class="muted">Despacho en 24–48h. Retiro en taller disponible.</p>
+        </div>
+        <div class="card hover"><strong>Pago seguro</strong>
+          <p class="muted">Webpay, Mercado Pago, transferencia.</p>
+        </div>
+        <div class="card hover"><strong>Garantía</strong>
+          <p class="muted">Plata 925 certificada, 3 meses de garantía legal.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row wrap" style="justify-content: center;">
+        <strong>Únete al newsletter</strong>
+        <input class="input" placeholder="Tu correo" style="max-width: 300px;">
+        <button class="btn primary">Suscribirme</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="accountModal" class="modal" aria-hidden="true">
+    <div class="card" role="dialog" aria-modal="true" aria-labelledby="accTitle">
+      <button class="x" data-close="#accountModal" aria-label="Cerrar">×</button>
+      <div class="separadorDialogoBoton">
+        <div class="contenedorDeDialogos">
+          <div id="tab-login" class="tab active" aria-labelledby="accTitle">
+            <h3 id="accTitle" class="title">Iniciar sesión</h3>
+            <p class="muted">Accede con tu email y contraseña.</p>
+            <form onsubmit="event.preventDefault();alert('Login simulado. Integra tu backend.');">
+              <div class="field">
+                <label for="loginEmail">Email</label>
+                <input id="loginEmail" type="email" autocomplete="username" required />
+              </div>
+              <div class="field pwrap">
+                <label for="loginPass">Contraseña</label>
+                <input id="loginPass" type="password" minlength="8" autocomplete="current-password" required />
+                <span class="eye" id="eyeLogin" title="Mostrar/Ocultar">👁</span>
+                <small class="muted">Mínimo 8 caracteres</small>
+              </div>
+              <button class="btn primary block" type="submit">Iniciar sesión</button>
+            </form>
+            <div style="margin-top:12px;display:grid;gap:10px;place-items:center">
+              <a href="#" class="link" id="goto-forgot">Olvidé mi contraseña</a>
+              <div class="row">
+                <span class="muted">¿No tienes cuenta?</span>
+                <a href="#" class="link" id="goto-register">Registrarme</a>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab-register" class="tab" aria-label="Registro">
+            <h3 class="title">Crear cuenta</h3>
+            <p class="muted">Crea tu cuenta para comprar y seguir tus pedidos.</p>
+            <form onsubmit="event.preventDefault();alert('Registro simulado. Integra tu backend.');">
+              <div class="field"><label for="regName">Nombre</label><input id="regName" required /></div>
+              <div class="field"><label for="regEmail">Email</label><input id="regEmail" type="email"
+                  autocomplete="email" required /></div>
+              <div class="field pwrap">
+                <label for="regPass">Contraseña</label>
+                <input id="regPass" type="password" minlength="8" autocomplete="new-password" required />
+                <span class="eye" id="eyeReg">👁</span>
+              </div>
+              <button class="btn primary block" type="submit">Crear cuenta</button>
+            </form>
+            <div style="margin-top:12px;text-align:center">
+              <a href="#" class="link" id="back-login-1">Volver a iniciar sesión</a>
+            </div>
+          </div>
+
+          <div id="tab-forgot" class="tab" aria-label="Recuperar contraseña">
+            <h3 class="title">Recuperar contraseña</h3>
+            <p class="muted">Ingresa tu email y te enviaremos instrucciones.</p>
+            <form onsubmit="event.preventDefault();alert('Si tu email existe, enviaremos un enlace de recuperación.');">
+              <div class="field"><label for="recEmail">Email</label><input id="recEmail" type="email" required />
+              </div>
+              <div class="row" style="margin-top:6px">
+                <button class="btn primary" type="submit">Enviar</button>
+                <button class="btn ghost" type="button" id="back-login-2">Volver</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="botonesDeAccion">
+          <button id="tabBtnLogin" class="btn ghost">Login</button>
+          <button id="tabBtnRegister" class="btn ghost">Registro</button>
+          <button id="tabBtnForgot" class="btn ghost">Recuperar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div><strong>Las Flacas Joyas</strong>
+        <p class="muted">Plata 925 y arcilla polimérica. Hecho a mano en Chile.</p>
+      </div>
+      <div>
+        <small class="muted">Ayuda</small><br>
+        <a href="ayuda.html">Envíos y devoluciones</a><br>
+        <a href="politicas.html">Políticas</a>
+      </div>
+      <div>
+        <small class="muted">Contacto</small><br>
+        <a href="contacto.html">Formulario & WhatsApp</a>
+      </div>
+      <div>
+        <small class="muted">Cuenta</small><br>
+        <a href="cuenta.html">Ingresar / Registro</a><br>
+        <a href="wishlist.html">Wishlist</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <script src="app.js"></script>
+  <script>
+    // Render best-sellers (rating top 4)
+    const top = listProducts({ sort: 'top' }).slice(0, 4);
+    const best = document.getElementById('best');
+    best.innerHTML = top.map(p => `
+            <a class="card product-card" href="producto.html?slug=${p.slug}">
+            <div class="skeleton" style="min-height:180px"></div>
+            <div class="row" style="justify-content:space-between"><strong>${p.nombre}</strong><span class="tag">★ ${p.rating}</span></div>
+            <div class="price">${money(p.precio)}</div>
+            </a>
+        `).join('');
+
+    // simple search redirect
+    document.getElementById('q').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { location.href = 'tienda.html?q=' + encodeURIComponent(e.target.value); }
+    });
+
+    // Script del año para el footer (de Funciones.js, pero lo ponemos aquí por si acaso)
+    if (document.getElementById("year")) {
+      document.getElementById("year").textContent = new Date().getFullYear();
+    }
+  </script>
+</body>
+
+</html>

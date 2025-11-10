@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout — Las Flacas Joyas</title>
+  <link rel="stylesheet" href="Estilos.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Ir al inicio">
+        <span>LA&nbsp;FLACA&nbsp;JOYAS®</span>
+      </a>
+
+      <div class="search">
+        <a class="btn" href="carrito.html" aria-label="Ver carrito" style="padding: 0 12px; font-size: 1.2rem;">🛒</a>
+      </div>
+
+      <nav class="menu" aria-label="Principal">
+        <a href="tienda.html">Tienda</a>
+        <a href="colecciones.html">Colecciones</a>
+        <a href="blog.html">Blog</a>
+        <a href="ayuda.html">Ayuda</a>
+        <a href="nosotros.html">Nosotros</a>
+      </nav>
+      <a href="cuenta.html" class="icon-btn icon-user" aria-label="Abrir cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="h1">Checkout</h1>
+    <div class="grid-3">
+      <form id="f1" class="card">
+        <strong>Datos</strong>
+        <input class="input" placeholder="Nombre completo" required>
+        <input class="input" placeholder="Email" required type="email">
+        <input class="input" placeholder="Teléfono">
+        <strong>Dirección</strong>
+        <input class="input" placeholder="Calle y número" required>
+        <input class="input" placeholder="Comuna" required>
+        <input class="input" placeholder="Región" required>
+        <input class="input" placeholder="Código postal (opcional)">
+      </form>
+      <form id="f2" class="card">
+        <strong>Envío</strong>
+        <label><input type="radio" name="envio" value="domicilio" checked> A domicilio (estimado en resumen)</label><br>
+        <label><input type="radio" name="envio" value="retiro"> Retiro en taller</label><br>
+        <label><input type="radio" name="envio" value="por-pagar"> Envío por pagar (paga al recibir)</label>
+      </form>
+      <form id="f3" class="card">
+        <strong>Pago</strong>
+        <select class="input">
+          <option>Webpay (crédito/débito)</option>
+          <option>Mercado Pago</option>
+          <option>Transferencia</option>
+        </select>
+        <button class="btn primary" id="pagar" type="button">Pagar</button>
+        <small class="muted">Pago tokenizado simulado (demo). SSL y políticas claras.</small>
+      </form>
+    </div>
+
+    <section class="card" id="resumen"></section>
+  </main>
+  <div class="toast"></div>
+  <script src="app.js"></script>
+  <script>
+    function renderResumen() {
+      const t = cartTotals();
+      document.getElementById('resumen').innerHTML = `
+      <strong>Resumen</strong>
+      <p class="muted">Total con IVA incluido</p>
+      <div class="row" style="gap:20px">
+        <div>Subtotal: <strong>${money(t.subtotal)}</strong></div>
+        <div>Descuento: <strong>${money(t.descuento)}</strong></div>
+        <div>Envío: <strong>${money(t.envio)}</strong></div>
+        <div>Total: <strong>${money(t.total)}</strong></div>
+      </div>`;
+    }
+    renderResumen();
+    document.getElementById('pagar').onclick = () => {
+      const orderId = 'O-' + Date.now();
+      const orders = JSON.parse(localStorage.getItem('lfj_orders_v1') || '[]');
+      orders.push({ id: orderId, cart: getCart(), estado: 'pagado', creado: Date.now() });
+      localStorage.setItem('lfj_orders_v1', JSON.stringify(orders));
+      localStorage.removeItem('lfj_cart_v1'); // reset
+      location.href = 'gracias.html?id=' + orderId;
+    };
+  </script>
+</body>
+
+</html>

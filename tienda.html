@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tienda — Las Flacas Joyas</title>
+  <link rel="stylesheet" href="Estilos.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Ir al inicio">
+        <span>LA&nbsp;FLACA&nbsp;JOYAS®</span>
+      </a>
+
+      <div class="search">
+        <input id="q" placeholder="Buscar aros, collares, plata 925..." aria-label="Buscar">
+        <a class="btn" href="carrito.html" aria-label="Ver carrito" style="padding: 0 12px; font-size: 1.2rem;">🛒</a>
+      </div>
+
+      <nav class="menu" aria-label="Principal">
+        <a href="tienda.html">Tienda</a>
+        <a href="colecciones.html">Colecciones</a>
+        <a href="blog.html">Blog</a>
+        <a href="ayuda.html">Ayuda</a>
+        <a href="nosotros.html">Nosotros</a>
+      </nav>
+
+      <a href="cuenta.html" class="icon-btn icon-user" aria-label="Abrir cuenta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="7" r="4"></circle>
+          <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="h1">Catálogo</h1>
+    <div class="filters">
+      <select id="f-cat">
+        <option value="">Categoría</option>
+        <option value="aros">Aros</option>
+        <option value="argollas">Argollas</option>
+        <option value="collares">Collares</option>
+      </select>
+      <select id="f-mat">
+        <option value="">Material</option>
+        <option value="plata">Plata 925</option>
+        <option value="arcilla">Arcilla polimérica</option>
+      </select>
+      
+      <select id="f-size">
+        <option value="">Tamaño</option>
+        <option value="pequeno">Pequeño</option>
+        <option value="mediano">Mediano</option>
+        <option value="grande">Grande</option>
+      </select>
+      <select id="f-sort">
+        <option value="">Ordenar</option>
+        <option value="top">Más vendidos</option>
+        <option value="new">Nuevos</option>
+        <option value="price-asc">Precio ↑</option>
+        <option value="price-desc">Precio ↓</option>
+      </select>
+      <select id="f-precio">
+        <option value="">Precio máx.</option>
+        <option value="15000">$15.000</option>
+        <option value="20000">$20.000</option>
+        <option value="30000">$30.000</option>
+      </select>
+    </div>
+    <div id="list" class="grid-4"></div>
+  </main>
+
+  <div class="toast"></div>
+  <script src="app.js"></script>
+  <script>
+    const params = new URL(location.href).searchParams;
+    document.getElementById('q').value = params.get('q') || '';
+
+    function render() {
+      const prods = listProducts({
+        categoria: document.getElementById('f-cat').value || params.get('categoria'),
+        material: document.getElementById('f-mat').value || params.get('material'),
+        size: document.getElementById('f-size').value || params.get('size'), // <-- CAMBIO AQUÍ
+        precioMax: document.getElementById('f-precio').value || params.get('precio'),
+        sort: document.getElementById('f-sort').value || params.get('sort'),
+        q: document.getElementById('q').value || params.get('q')
+      });
+
+      const list = document.getElementById('list');
+      list.innerHTML = prods.map(p => {
+
+        const imgUrl = (p.media && p.media.length > 0) ? p.media[0].url : 'assets/placeholder.jpg';
+        const imgAlt = (p.media && p.media.length > 0) ? p.media[0].alt : p.nombre;
+        return `
+      <a class="card product-card" href="producto.html?slug=${p.slug}">
+        
+        <img class="product-card-img" src="${imgUrl}" alt="${imgAlt}" loading="lazy">
+        
+        <div class="row" style="justify-content:space-between">
+          <strong>${p.nombre}</strong> <span class="tag">${p.material}</span>
+        </div>
+        <div class="price">${money(p.precio)}</div>
+      </a>
+    `}).join('') || '<p class="muted">Sin resultados.</p>';
+    }
+
+    // v CAMBIO AQUÍ v
+    ['f-cat', 'f-mat', 'f-precio', 'f-sort', 'f-size'].forEach(id => document.getElementById(id).addEventListener('change', render));
+    // ^ CAMBIO AQUÍ ^
+    document.getElementById('q').addEventListener('keydown', (e) => { if (e.key === 'Enter') render(); });
+    render();
+  </script>
+</body>
+
+</html>

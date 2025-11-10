@@ -1,0 +1,165 @@
+<!doctype html><html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Las Flacas Joyas</title><link rel="stylesheet" href="Estilos.css"></head>
+<body>
+<header class="header"><div class="container header-inner">
+  <a class="brand" href="index.html"><span class="dot"></span> Las Flacas Joyas</a>
+  <nav class="nav"><a href="admin.html" class="pill active">Admin</a><a href="cuenta.html">Cuenta</a></nav>
+</div></header>
+<main class="container">
+  <h1 class="h1">Backoffice (demo)</h1>
+  <div class="notice">Requiere estar logueado. Si tu rol es "admin", podrás crear/editar productos. (Demo localStorage)</div>
+  <section class="grid-3" style="margin-top:12px">
+    <div class="card">
+      <strong id="form-titulo">Nuevo producto</strong>
+      <input id="n-nombre" class="input" placeholder="Nombre">
+      <input id="n-slug" class="input" placeholder="slug-ejemplo">
+      
+      <select id="n-cat" class="input">
+        <option value="aros">Aros</option>
+        <option value="argollas">Argollas</option> 
+        <option value="collares">Collares</option>
+      </select>
+      <select id="n-mat" class="input">
+        <option value="plata">Plata 925</option><option value="arcilla">Arcilla polimérica</option>
+      </select>
+      
+      <select id="n-size" class="input">
+        <option value="">-- Tamaño --</option>
+        <option value="pequeno">Pequeño</option>
+        <option value="mediano">Mediano</option>
+        <option value="grande">Grande</option>
+      </select>
+      <input id="n-precio" type="number" class="input" placeholder="Precio">
+      <textarea id="n-desc" class="input" placeholder="Descripción"></textarea>
+      
+      <input id="n-img" class="input" placeholder="URL de imagen (ej: assets/mi-foto.jpg)">
+      
+      <div class="row" style="margin-top:10px;">
+        <button class="btn primary" id="crear">Crear</button>
+        <button class="btn" id="cancelar-edicion" style="display:none;">Cancelar</button>
+      </div>
+      </div>
+    
+    <div class="card">
+      <strong>Inventario</strong>
+      <div id="tabla"></div>
+    </div>
+    
+    <div class="card">
+      <strong>Órdenes (demo)</strong>
+      <div id="ord"></div>
+    </div>
+  </section>
+</main>
+<script src="app.js"></script>
+<script>
+  let editingId = null; // Variable para saber qué ID estamos editando
+  const u = getUser();
+  if(!u){ alert('Inicia sesión'); location.href='cuenta.html'; }
+
+  // 1. Función para limpiar y resetear el formulario a "modo creación"
+  function resetForm(){
+    editingId = null;
+    document.getElementById('form-titulo').textContent = 'Nuevo producto';
+    document.getElementById('crear').textContent = 'Crear';
+    document.getElementById('cancelar-edicion').style.display = 'none';
+
+    // Limpiar campos
+    document.getElementById('n-nombre').value = '';
+    document.getElementById('n-slug').value = '';
+    document.getElementById('n-cat').value = 'aros';
+    document.getElementById('n-mat').value = 'plata';
+    document.getElementById('n-size').value = '';
+    document.getElementById('n-precio').value = '';
+    document.getElementById('n-desc').value = '';
+    document.getElementById('n-img').value = '';
+  }
+
+  // 2. Función para cargar un producto en el formulario para editar
+  function loadProductForEdit(id) {
+    const p = adminGetProduct(id); // Usa la nueva función de app.js
+    if (!p) return;
+
+    editingId = id; // Marcamos que estamos editando este ID
+    document.getElementById('form-titulo').textContent = `Editando: ${p.nombre}`;
+    document.getElementById('crear').textContent = 'Actualizar';
+    document.getElementById('cancelar-edicion').style.display = 'inline-flex';
+
+    // Llenar el formulario con los datos del producto
+    document.getElementById('n-nombre').value = p.nombre;
+    document.getElementById('n-slug').value = p.slug;
+    document.getElementById('n-cat').value = p.categoria;
+    document.getElementById('n-mat').value = p.material;
+    document.getElementById('n-size').value = p.size || ''; // (p.size por si algún producto viejo no lo tiene)
+    document.getElementById('n-precio').value = p.precio;
+    document.getElementById('n-desc').value = p.descripcion;
+    document.getElementById('n-img').value = (p.media && p.media.length > 0) ? p.media[0].url : '';
+    
+    // Mover la vista al formulario
+    window.scrollTo(0, 0);
+  }
+  
+  // 3. Función RENDER (modificada para añadir el botón de editar)
+  function render(){
+    const items = adminList();
+    document.getElementById('tabla').innerHTML = `
+      <table class="table"><thead><tr><th>Nombre</th><th>Precio</th><th>Stock</th><th></th></tr></thead>
+      <tbody>${items.map(p=>`<tr>
+        <td>${p.nombre}</td>
+        <td>${money(p.precio)}</td>
+        <td>${p.variantes.reduce((a,v)=>a+v.stock,0)}</td>
+        
+        <td style="display:flex; gap: 5px; flex-wrap: wrap;">
+          <button class="btn" onclick="loadProductForEdit('${p.id}')">Editar</button>
+          <button class="btn" onclick="adminDelete('${p.id}'); resetForm(); render();">Eliminar</button>
+        </td>
+        </tr>`).join('')}</tbody></table>`;
+      
+    const ord = JSON.parse(localStorage.getItem('lfj_orders_v1')||'[]');
+    document.getElementById('ord').innerHTML = ord.map(o=>`<div class="notice">#${o.id} — ${o.estado} — ${o.cart.items.length} ítems</div>`).join('') || '<p class="muted">Sin órdenes.</p>';
+  }
+  
+  render(); // Carga inicial de la tabla
+
+  // 4. Lógica del botón Cancelar
+  document.getElementById('cancelar-edicion').onclick = () => {
+    resetForm();
+  };
+
+  // 5. Lógica del botón "Crear" / "Actualizar" (modificada)
+  document.getElementById('crear').onclick=()=>{
+      
+      const nombre = document.getElementById('n-nombre').value;
+      const imgUrl = document.getElementById('n-img').value || 'assets/placeholder.jpg';
+
+      // Creamos el objeto 'producto' o 'patch' con los datos del formulario
+      const p = {
+        slug: document.getElementById('n-slug').value,
+        nombre: nombre,
+        descripcion: document.getElementById('n-desc').value,
+        categoria: document.getElementById('n-cat').value,
+        material: document.getElementById('n-mat').value,
+        size: document.getElementById('n-size').value,
+        precio: parseInt(document.getElementById('n-precio').value||0,10),
+        stock: 10, // Nota: esto resetea el stock y variantes, consistente con la lógica de "crear"
+        variantes:[{sku:'SKU-'+Date.now(), material:document.getElementById('n-mat').value, talla:'Única', color:'plata', precio: parseInt(document.getElementById('n-precio').value||0,10), stock:10}],
+        media:[{url: imgUrl, alt: nombre}], 
+        tags:[], rating:5, reviews:0 // Resetea tags y rating
+      };
+
+      if (editingId) {
+        // MODO ACTUALIZAR: Usamos la función de app.js
+        adminUpdate(editingId, p);
+        alert('Producto actualizado');
+      } else {
+        // MODO CREAR: Usamos la función de app.js
+        adminCreate(p);
+        alert('Producto creado');
+      }
+      
+      resetForm(); // Limpiamos el formulario
+      render(); // Refrescamos la tabla
+  };
+</script>
+</body></html>
