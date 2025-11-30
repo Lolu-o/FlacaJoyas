@@ -36,7 +36,7 @@
         <a href="ayuda.html">Ayuda</a>
         <a href="nosotros.html">Nosotros</a>
       </nav>
-      <a href="cuenta.html" class="icon-btn icon-user" aria-label="Abrir cuenta">
+      <a href="cuenta.html" id="user-btn" class="icon-btn icon-user" aria-label="Abrir cuenta">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <circle cx="12" cy="7" r="4"></circle>
           <path d="M5.5 21a6.5 6.5 0 0 1 13 0"></path>
@@ -60,10 +60,10 @@
       <p class="muted">Taller chileno de joyería artesanal. Piezas hipoalergénicas en pequeños lotes.</p>
     </div>
   </section>
-  <div class="container" style="display: grid; gap: 32px; margin-top: 32px;">
+  <div class="container" style="display: grid; gap: 40px; margin-top: 32px;">
     <section id="redes-sociales">
       <div>
-        <h1 class="h1">Nuestras redes:</h1>
+        <h1 class="h1">Síguenos en Instagram</h1>
         <div class="iconos-redes">
           <a href="https://www.instagram.com/laflaca_joyas/" target="_blank" rel="noopener noreferrer"
             aria-label="Visita nuestro Instagram" title="Instagram">
@@ -75,35 +75,46 @@
               <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
             </svg>
           </a>
-
         </div>
       </div>
     </section>
+
+    <section class="card" style="overflow: hidden; padding: 0;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; min-height: 300px;">
+        <div style="padding: 40px; display: flex; flex-direction: column; justify-content: center;">
+          <span class="tag" style="width: fit-content; margin-bottom: 10px;">Nuevo Lanzamiento</span>
+          <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin: 0 0 16px; color: var(--brand);">
+            Colección Amanecer</h2>
+          <p class="muted" style="margin-bottom: 24px; line-height: 1.6;">
+            Inspirada en los primeros rayos de sol del valle. Una fusión única de arcilla polimérica en tonos terracota
+            y detalles en baño de oro de 18k. Piezas que cuentan historias.
+          </p>
+          <div class="row wrap">
+            <input class="input" placeholder="Tu correo para novedades" style="max-width: 250px;">
+            <button class="btn primary">Suscribirme</button>
+          </div>
+        </div>
+        <div style="background: url('assets/placeholder.jpg') center/cover no-repeat; min-height: 250px;"></div>
+      </div>
+    </section>
+
     <section>
-      <h2 class="h2">Best-sellers</h2>
+      <h2 class="h2">Los más vendidos</h2>
       <div id="best" class="grid-4"></div>
     </section>
 
     <section>
-      <h2 class="h2">Beneficios</h2>
+      <h2 class="h2">Por qué elegirnos</h2>
       <div class="grid-3">
-        <div class="card hover"><strong>Entrega rápida</strong>
-          <p class="muted">Despacho en 24–48h. Retiro en taller disponible.</p>
+        <div class="card hover"><strong>Hecho a Mano</strong>
+          <p class="muted">Cada pieza es modelada y ensamblada en nuestro taller en Chile.</p>
         </div>
-        <div class="card hover"><strong>Pago seguro</strong>
-          <p class="muted">Webpay, Mercado Pago, transferencia.</p>
+        <div class="card hover"><strong>Hipoalergénico</strong>
+          <p class="muted">Usamos acero quirúrgico y baños libres de níquel.</p>
         </div>
         <div class="card hover"><strong>Garantía</strong>
-          <p class="muted">Plata 925 certificada, 3 meses de garantía legal.</p>
+          <p class="muted">3 meses de garantía legal en todas tus joyas.</p>
         </div>
-      </div>
-    </section>
-
-    <section class="card">
-      <div class="row wrap" style="justify-content: center;">
-        <strong>Únete al newsletter</strong>
-        <input class="input" placeholder="Tu correo" style="max-width: 300px;">
-        <button class="btn primary">Suscribirme</button>
       </div>
     </section>
   </div>
@@ -119,7 +130,7 @@
             <form onsubmit="event.preventDefault();alert('Login simulado. Integra tu backend.');">
               <div class="field">
                 <label for="loginEmail">Email</label>
-                <input id="loginEmail" type="email" autocomplete="username" required />
+                <input id="loginEmail" type="text" autocomplete="username" placeholder="Email o Usuario" required />
               </div>
               <div class="field pwrap">
                 <label for="loginPass">Contraseña</label>
@@ -206,25 +217,83 @@
 
   <script src="app.js"></script>
   <script>
-    // Render best-sellers (rating top 4)
-    const top = listProducts({ sort: 'top' }).slice(0, 4);
-    const best = document.getElementById('best');
-    best.innerHTML = top.map(p => `
-            <a class="card product-card" href="producto.html?slug=${p.slug}">
-            <div class="skeleton" style="min-height:180px"></div>
-            <div class="row" style="justify-content:space-between"><strong>${p.nombre}</strong><span class="tag">★ ${p.rating}</span></div>
-            <div class="price">${money(p.precio)}</div>
-            </a>
-        `).join('');
+    // 1. Cargar Best Sellers usando la nueva función (Punto 7)
+    const topProducts = getBestSellers(4);
+    const bestContainer = document.getElementById('best');
+    
+    if (topProducts.length > 0) {
+        bestContainer.innerHTML = topProducts.map(p => {
+            const imgUrl = (p.media && p.media.length > 0) ? p.media[0].url : 'assets/placeholder.jpg';
+            return `
+                <a class="card product-card" href="producto.html?slug=${p.slug}">
+                <img class="product-card-img" src="${imgUrl}" alt="${p.nombre}">
+                <div class="row" style="justify-content:space-between">
+                    <strong>${p.nombre}</strong>
+                    <span class="tag">★ ${p.rating}</span>
+                </div>
+                <div class="price">${money(p.precio)}</div>
+                </a>
+            `;
+        }).join('');
+    } else {
+        bestContainer.innerHTML = '<p class="muted">Cargando novedades...</p>';
+    }
 
-    // simple search redirect
-    document.getElementById('q').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') { location.href = 'tienda.html?q=' + encodeURIComponent(e.target.value); }
+    // 2. Lógica del Buscador
+    const searchInput = document.getElementById('q');
+    if (searchInput) {
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { location.href = 'tienda.html?q=' + encodeURIComponent(e.target.value); }
+        });
+    }
+
+    // 3. Indicador de Sesión en Header
+    document.addEventListener('DOMContentLoaded', () => {
+        const user = getUser();
+        if (user) {
+            const btn = document.getElementById('user-btn');
+            if (btn) {
+                btn.style.color = 'var(--primary)';
+                btn.setAttribute('title', `Hola, ${user.nombre}`);
+            }
+        }
     });
 
-    // Script del año para el footer (de Funciones.js, pero lo ponemos aquí por si acaso)
-    if (document.getElementById("year")) {
-      document.getElementById("year").textContent = new Date().getFullYear();
+    // 4. MODAL: Lógica de Login y Registro (Punto 6)
+    // Login
+    const loginForm = document.querySelector('#tab-login form');
+    if(loginForm) {
+        loginForm.onsubmit = (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPass').value;
+            
+            const user = login(email, pass);
+            if(user) {
+                location.reload(); // Recargar para actualizar header
+            } else {
+                alert('Credenciales incorrectas');
+            }
+        };
+    }
+
+    // Registro
+    const regForm = document.querySelector('#tab-register form');
+    if(regForm) {
+        regForm.onsubmit = (e) => {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPass').value;
+
+            const res = register(name, email, pass);
+            if(res.ok) {
+                alert('¡Cuenta creada! Has iniciado sesión.');
+                location.reload();
+            } else {
+                alert('Error: ' + res.msg);
+            }
+        };
     }
   </script>
 </body>

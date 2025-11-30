@@ -16,8 +16,8 @@
         <span>LA&nbsp;FLACA&nbsp;JOYAS®</span>
       </a>
 
-      <div class="search"><a class="btn" href="carrito.html" aria-label="Ver carrito"
-          style="padding: 0 12px; font-size: 1.2rem;">🛒</a>
+      <div class="search">
+        <a class="btn" href="carrito.html" aria-label="Ver carrito" style="padding: 0 12px; font-size: 1.2rem;">🛒</a>
       </div>
 
       <nav class="menu" aria-label="Principal">
@@ -36,38 +36,180 @@
       </a>
     </div>
   </header>
-  <main class="container">
+
+  <main class="container" style="padding-top: 20px;">
     <div class="grid-3">
-      <section class="card">
-        <h2 class="h2">Ingresar</h2>
-        <input id="email" class="input" placeholder="Email">
-        <input id="pass" type="password" class="input" placeholder="Contraseña">
-        <button class="btn primary" id="ing">Ingresar</button>
-        <small class="muted">Tip: Admin demo — lasflacasjoyas@gamil.com / asd123</small>
+      
+      <section class="card" style="grid-column: span 2;">
+        <div style="display: flex; flex-wrap: wrap; gap: 40px;">
+            
+            <div style="flex: 1; min-width: 280px;">
+                <h2 class="h2" style="margin-top:0; margin-bottom: 20px; font-size: 1.8rem; justify-content: flex-start;">Iniciar Sesión</h2>
+                <p class="muted">Si ya tienes cuenta, ingresa aquí.</p>
+                
+                <div class="field">
+                    <label class="muted" for="email">Email</label>
+                    <input id="email" class="input" placeholder="ejemplo@gmail.com" type="email">
+                    <div id="login-error" style="color: var(--err); font-size: 0.85rem; display: none; margin-top: 5px;"></div>
+                </div>
+                
+                <div class="field">
+                    <label class="muted" for="pass">Contraseña</label>
+                    <input id="pass" type="password" class="input" placeholder="••••••••">
+                </div>
+                
+                <button class="btn primary block" id="ing">Ingresar</button>
+                <div style="margin-top: 15px; font-size: 0.85rem; color: #999;">
+                  <em>Admin Demo: lasflacasjoyas@gmail.com / asd123</em>
+                </div>
+            </div>
+
+            <div style="width: 1px; background: var(--border); display: none; @media(min-width: 768px){display:block;}"></div>
+
+            <div style="flex: 1; min-width: 280px; border-top: 1px solid var(--border); padding-top: 20px; margin-top: -20px; 
+                        border-left: 0; padding-left: 0;">
+                <style>
+                  @media(min-width: 780px) {
+                    .col-registro { border-top: 0 !important; border-left: 1px solid var(--border) !important; padding-top: 0 !important; padding-left: 40px !important; margin-top: 0 !important; }
+                  }
+                </style>
+                <div class="col-registro">
+                  <h2 class="h2" style="margin-top:0; margin-bottom: 20px; font-size: 1.8rem; justify-content: flex-start;">Crear Cuenta</h2>
+                  <p class="muted">¿Nueva aquí? Regístrate para guardar tus pedidos.</p>
+                  
+                  <div class="field">
+                      <label class="muted" for="new-name">Nombre</label>
+                      <input id="new-name" class="input" placeholder="Tu nombre">
+                  </div>
+                  <div class="field">
+                      <label class="muted" for="new-email">Email</label>
+                      <input id="new-email" class="input" placeholder="tucorreo@gmail.com" type="email">
+                  </div>
+                  <div class="field">
+                      <label class="muted" for="new-pass">Contraseña</label>
+                      <input id="new-pass" type="password" class="input" placeholder="Crea una clave">
+                  </div>
+                  
+                  <button class="btn ghost block" id="reg">Registrarme</button>
+                </div>
+            </div>
+
+        </div>
       </section>
+
       <section class="card">
-        <h2 class="h2">Perfil</h2>
-        <div id="perfil" class="muted">No autenticado.</div>
-        <button class="btn" id="out">Cerrar sesión</button>
+        <h2 class="h2" style="margin-top:0; font-size: 1.5rem;">Mi Perfil</h2>
+        
+        <div id="perfil" class="muted" style="margin-bottom: 20px; padding: 10px; background: #f9f9f9; border-radius: 8px;">
+            No autenticado.
+        </div>
+        
+        <button class="btn" id="out" style="width:100%; margin-bottom: 20px;">Cerrar sesión</button>
+        
+        <hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+        
+        <h3 class="h2" style="font-size: 1.2rem; margin: 0 0 10px; justify-content: flex-start;">Mis pedidos</h3>
+        <div id="orders" style="max-height: 300px; overflow-y: auto;">
+            </div>
       </section>
-      <section class="card">
-        <h2 class="h2">Mis pedidos</h2>
-        <div id="orders"></div>
-      </section>
+      
     </div>
   </main>
+
   <script src="app.js"></script>
   <script>
+    // --- 1. RENDERIZADO DEL ESTADO (Perfil y Pedidos) ---
     function render() {
-      const u = getUser();
-      document.getElementById('perfil').textContent = u ? `${u.nombre} (${u.rol})` : 'No autenticado.';
+      const u = getUser(); // Función viene de app.js
+      const perfilDiv = document.getElementById('perfil');
+      const outBtn = document.getElementById('out');
+      
+      // Mostrar info del usuario si existe
+      if (u) {
+          perfilDiv.innerHTML = `
+            <div style="font-weight:bold; color:var(--primary); font-size:1.1rem;">${u.nombre}</div>
+            <div style="font-size:0.9rem;">${u.email}</div>
+            <span class="tag" style="margin-top:5px; display:inline-block;">${u.rol.toUpperCase()}</span>
+          `;
+          outBtn.style.display = 'inline-flex';
+      } else {
+          perfilDiv.textContent = 'No has iniciado sesión.';
+          outBtn.style.display = 'none'; // Ocultar botón cerrar sesión si no hay nadie
+      }
+
+      // Mostrar historial de pedidos (Simulado en localStorage)
       const list = JSON.parse(localStorage.getItem('lfj_orders_v1') || '[]');
-      document.getElementById('orders').innerHTML = list.map(o => `<div class="notice">Pedido ${o.id} — ${o.estado}</div>`).join('') || '<p class="muted">Sin pedidos.</p>';
+      const ordersContainer = document.getElementById('orders');
+      
+      // Filtramos pedidos si no es admin (opcional, por ahora mostramos todos los locales del navegador)
+      // En un sistema real, filtrarías por u.email
+      
+      if(list.length === 0) {
+          ordersContainer.innerHTML = '<p class="muted" style="font-size:0.9rem;">No tienes pedidos aún.</p>';
+      } else {
+          ordersContainer.innerHTML = list.reverse().map(o => `
+            <div class="notice" style="margin-bottom:8px; font-size:0.85rem; padding: 10px;">
+                <strong>Pedido #${o.id}</strong><br>
+                <span class="muted">${new Date(o.creado).toLocaleDateString()}</span><br>
+                Estado: ${o.estado}
+            </div>
+          `).join('');
+      }
     }
+    
+    // --- 2. LÓGICA DE LOGIN (Ingresar) ---
+    document.getElementById('ing').onclick = () => {
+        const emailVal = document.getElementById('email').value;
+        const passVal = document.getElementById('pass').value;
+        const errDiv = document.getElementById('login-error');
+
+        // Llamamos a login() de app.js (versión estricta)
+        const user = login(emailVal, passVal);
+        
+        if (user) {
+            // Login exitoso
+            errDiv.style.display = 'none';
+            window.location.href = 'index.html'; // Redirigir al inicio
+        } else {
+            // Error
+            errDiv.textContent = "Usuario no registrado o contraseña incorrecta.";
+            errDiv.style.display = 'block';
+        }
+    };
+
+    // --- 3. LÓGICA DE REGISTRO (Crear Cuenta) ---
+    document.getElementById('reg').onclick = () => {
+        const nameVal = document.getElementById('new-name').value;
+        const emailVal = document.getElementById('new-email').value;
+        const passVal = document.getElementById('new-pass').value;
+
+        // Validaciones simples
+        if(!nameVal || !emailVal || !passVal) {
+            return alert('Por favor, completa todos los campos.');
+        }
+        if(!emailVal.includes('@')) {
+            return alert('Ingresa un email válido.');
+        }
+
+        // Llamamos a register() de app.js
+        const result = register(nameVal, emailVal, passVal);
+        
+        if(result.ok) {
+            alert('¡Cuenta creada con éxito! Bienvenido/a.');
+            window.location.href = 'index.html'; // Redirigir logueado
+        } else {
+            alert('Error: ' + result.msg); // Ej: Email ya existe
+        }
+    };
+
+    // --- 4. CERRAR SESIÓN ---
+    document.getElementById('out').onclick = () => { 
+        logout(); 
+        render(); 
+    };
+    
+    // Inicializar vista al cargar
     render();
-    document.getElementById('ing').onclick = () => { login(document.getElementById('email').value, document.getElementById('pass').value); render(); };
-    document.getElementById('out').onclick = () => { logout(); render(); };
   </script>
 </body>
-
 </html>

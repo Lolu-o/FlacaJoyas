@@ -1,50 +1,56 @@
-/* Las Flacas Joyas - app.js (demo sin backend)
-  - Catálogo, filtros, carrito, checkout, reseñas, wishlist
-  - Cuenta/registro/login simulado (NO producción)
-  - Admin-lite: CRUD de productos (localStorage)
-  \Reemplaza por una API real (Node/Express + Postgres) para producción.
-*/
+/* Las Flacas Joyas - app.js (Prototipo Funcional) */
+
 const LS_KEYS = {
-  PRODUCTS: 'lfj_products_v1',
+  PRODUCTS: 'lfj_products_v2', // Cambiamos versión para resetear la data antigua de plata
   CART: 'lfj_cart_v1',
-  USER: 'lfj_user_v1',
+  USER: 'lfj_session_v1',
+  USERS_DB: 'lfj_users_db_v1', // "Tabla" de usuarios registrados
   WISHLIST: 'lfj_wishlist_v1',
   ORDERS: 'lfj_orders_v1'
 };
 
-// --- Seed de productos (ejemplo)
+// --- Seed de productos (SIN PLATA 925)
 const seedProducts = [
   {
-    id:'p1', slug:'aros-aurora-plata-925',
-    nombre:'Aros Aurora - Plata 925',
-    descripcion:'Aros minimalistas en plata 925 hipoalergénica. Hecho a mano.',
-    categoria:'aros', material:'plata', precio:18990, stock:15,
+    id:'p1', slug:'aros-aurora-acero-dorado',
+    nombre:'Aros Aurora - Acero Dorado',
+    descripcion:'Aros minimalistas en acero quirúrgico hipoalergénico con baño de oro. Hecho a mano.',
+    categoria:'aros', material:'acero', precio:18990, stock:15,
     size: 'pequeno', 
-    variantes:[{sku:'P1-PLATA', material:'plata', talla:'Única', color:'plata', precio:18990, stock:15}],
-    media:[{url:'assets/aros1.jpg', alt:'Aros Aurora'},{url:'assets/aros1b.jpg', alt:'Aros Aurora detalle'}],
-    tags:['best-seller','plata925'], rating:4.8, reviews: 42
+    variantes:[{sku:'P1-ACERO', material:'acero', talla:'Única', color:'dorado', precio:18990, stock:15}],
+    media:[{url:'assets/aros1.jpg', alt:'Aros Aurora'}],
+    tags:['best-seller','hipoalergenico'], rating:4.8, reviews: 42
   },
   {
-    id:'p2', slug:'collar-luna-arcilla-polimerica',
-    nombre:'Collar Luna - Arcilla Polimérica',
-    descripcion:'Collar con dije luna, arcilla polimérica y cadena acero.',
+    id:'p2', slug:'collar-luna-arcilla',
+    nombre:'Collar Luna - Arcilla',
+    descripcion:'Collar con dije luna, arcilla polimérica y cadena de acero inoxidable.',
     categoria:'collares', material:'arcilla', precio:15990, stock:12,
     size: 'mediano', 
-    variantes:[{sku:'P2-ARC', material:'arcilla', talla:'45cm', color:'dorado', precio:15990, stock:12}],
+    variantes:[{sku:'P2-ARC', material:'arcilla', talla:'45cm', color:'bicolor', precio:15990, stock:12}],
     media:[{url:'assets/collar1.jpg', alt:'Collar Luna'}],
     tags:['lifestyle','regalo'], rating:4.7, reviews: 18
   },
   {
-    id:'p3', slug:'anillo-aurum-plata-925',
-    nombre:'Anillo Aurum - Plata 925',
-    descripcion:'Anillo ajustable plata 925, baño oro suave.',
-    categoria:'argollas', material:'plata', precio:22990, stock:8, // <-- CAMBIO AQUÍ
+    id:'p3', slug:'anillo-aurum-bano-oro',
+    nombre:'Anillo Aurum - Baño de Oro',
+    descripcion:'Anillo ajustable base cobre con baño de oro 18k y detalles en arcilla.',
+    categoria:'argollas', material:'bano-oro', precio:22990, stock:8,
     size: 'pequeno', 
-    variantes:[{sku:'P3-PL-6', material:'plata', talla:'6', color:'plata', precio:22990, stock:3},
-              {sku:'P3-PL-7', material:'plata', talla:'7', color:'plata', precio:22990, stock:3},
-              {sku:'P3-PL-8', material:'plata', talla:'8', color:'plata', precio:22990, stock:2}],
+    variantes:[{sku:'P3-ORO-6', material:'bano-oro', talla:'6', color:'dorado', precio:22990, stock:3},
+              {sku:'P3-ORO-7', material:'bano-oro', talla:'7', color:'dorado', precio:22990, stock:3}],
     media:[{url:'assets/anillo1.jpg', alt:'Anillo Aurum'}],
     tags:['nuevo'], rating:4.6, reviews: 11
+  },
+  {
+    id:'p4', slug:'aros-flores-arcilla',
+    nombre:'Aros Flores Primavera',
+    descripcion:'Diseño floral esculpido en arcilla polimérica. Pasador de acero.',
+    categoria:'aros', material:'arcilla', precio:12990, stock:20,
+    size: 'grande', 
+    variantes:[{sku:'P4-FLO', material:'arcilla', talla:'Única', color:'rosa', precio:12990, stock:20}],
+    media:[{url:'assets/placeholder.jpg', alt:'Aros Flores'}],
+    tags:['colorido'], rating:5.0, reviews: 5
   }
 ];
 
@@ -66,11 +72,10 @@ function money(clp){ return new Intl.NumberFormat('es-CL',{style:'currency',curr
   if(!getStore(LS_KEYS.CART, null)){
     setStore(LS_KEYS.CART, {items:[], coupon:null, updatedAt:Date.now()});
   }
-  if(!getStore(LS_KEYS.WISHLIST, null)) setStore(LS_KEYS.WISHLIST, []);
-  if(!getStore(LS_KEYS.ORDERS, null)) setStore(LS_KEYS.ORDERS, []);
+  if(!getStore(LS_KEYS.USERS_DB, null)) setStore(LS_KEYS.USERS_DB, []); // Base de datos de usuarios vacía
 })();
 
-// --- Catálogo y filtros (PLP)
+// --- Catálogo y filtros
 function listProducts({categoria, material, precioMax, sort, q, size}={}){
   let products = getStore(LS_KEYS.PRODUCTS, []);
   if(categoria) products = products.filter(p=>p.categoria===categoria);
@@ -84,10 +89,15 @@ function listProducts({categoria, material, precioMax, sort, q, size}={}){
   if(sort){
     if(sort==='price-asc') products.sort((a,b)=>a.precio-b.precio);
     if(sort==='price-desc') products.sort((a,b)=>b.precio-a.precio);
-    if(sort==='top') products.sort((a,b)=>b.rating-a.rating);
+    if(sort==='top') products.sort((a,b)=>b.rating-a.rating); // Lógica de "Más vendidos" basada en rating
     if(sort==='new') products.sort((a,b)=>b.id.localeCompare(a.id));
   }
   return products;
+}
+
+function getBestSellers(limit = 4) {
+    // Reutilizamos la lógica de sort 'top'
+    return listProducts({ sort: 'top' }).slice(0, limit);
 }
 
 // --- PDP helpers
@@ -140,21 +150,62 @@ function cartTotals(cart=null){
     if(cart.coupon.tipo==='%') descuento = Math.round(subtotal * cart.coupon.valor/100);
     else if(cart.coupon.tipo==='$' && (!cart.coupon.min || subtotal>=cart.coupon.min)) descuento = cart.coupon.valor;
   }
-  const envio = subtotal>50000 ? 0 : 3990; // ejemplo regla
-  const iva = Math.round((subtotal - descuento + envio) * 0.19 / 1.19); // IVA incluido
+  const envio = subtotal>50000 ? 0 : 3990;
+  const iva = Math.round((subtotal - descuento + envio) * 0.19 / 1.19);
   const total = subtotal - descuento + envio;
   return {subtotal, descuento, envio, iva, total};
 }
 
-// --- Cuenta (login/registro simulado)
+// --- AUTH: Login & Registro (Estricto) ---
+
 function getUser(){ return getStore(LS_KEYS.USER, null); }
-function login(email, pass){
-  const demo = {email:'lasflacasjoyas@gamil.com', password:'asd123', nombre:'Admin', rol:'admin'};
-  const user = (email===demo.email && pass===demo.password) ? demo : {email, nombre: email.split('@')[0], rol:'cliente'};
-  setStore(LS_KEYS.USER, user);
-  toast(`Bienvenida, ${user.nombre}`);
-  return user;
+
+// Nuevo: Registro de usuarios
+function register(nombre, email, password) {
+    const users = getStore(LS_KEYS.USERS_DB, []);
+    
+    // Validación básica
+    if(users.find(u => u.email === email)) {
+        return { ok: false, msg: 'El email ya está registrado.' };
+    }
+    
+    const newUser = { nombre, email, password, rol: 'cliente', id: 'u-'+Date.now() };
+    users.push(newUser);
+    setStore(LS_KEYS.USERS_DB, users);
+    
+    // Auto-login
+    setStore(LS_KEYS.USER, { nombre: newUser.nombre, email: newUser.email, rol: newUser.rol });
+    return { ok: true };
 }
+
+function login(email, pass){
+  const cleanEmail = email.trim();
+
+  // 1. Verificar Admin (Credenciales Hardcodeadas)
+  const adminDemo = {email:'lasflacasjoyas@gmail.com', password:'asd123', nombre:'Admin', rol:'admin'};
+  
+  if(cleanEmail === adminDemo.email && pass === adminDemo.password) {
+      setStore(LS_KEYS.USER, adminDemo);
+      toast(`Bienvenida, Admin`);
+      return adminDemo;
+  }
+
+  // 2. Verificar Usuarios Registrados (LocalStorage)
+  const users = getStore(LS_KEYS.USERS_DB, []);
+  const foundUser = users.find(u => u.email === cleanEmail && u.password === pass);
+
+  if (foundUser) {
+      // Creamos sesión segura sin guardar password en sesión
+      const sessionUser = { nombre: foundUser.nombre, email: foundUser.email, rol: foundUser.rol };
+      setStore(LS_KEYS.USER, sessionUser);
+      toast(`Hola de nuevo, ${foundUser.nombre}`);
+      return sessionUser;
+  }
+
+  // 3. Fallo
+  return null;
+}
+
 function logout(){ localStorage.removeItem(LS_KEYS.USER); toast('Sesión cerrada'); }
 
 // --- Wishlist
@@ -194,22 +245,16 @@ function toast(msg){
   setTimeout(()=>t.classList.remove('show'), 1600);
 }
 
-// --- Util para cargar params
 function getParam(name){
   const url = new URL(location.href);
   return url.searchParams.get(name);
 }
 
-
-//MODO ADMIN
-
+// Init UI Admin check
 (function() {
     const user = getUser(); 
-    
     if (user && user.rol === 'admin') {
       const adminBtn = document.getElementById('admin-btn');
-      if (adminBtn) {
-        adminBtn.style.display = 'inline-flex';
-      }
+      if (adminBtn) adminBtn.style.display = 'inline-flex';
     }
-  })();
+})();
