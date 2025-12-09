@@ -9,47 +9,47 @@ const LS_KEYS = {
   ORDERS: 'lfj_orders_v1'
 };
 
-// --- Seed de productos (SIN PLATA 925)
+// --- Seed de productos
 const seedProducts = [
   {
-    id:'p1', slug:'aros-aurora-acero-dorado',
-    nombre:'Aros Aurora - Acero Dorado',
-    descripcion:'Aros minimalistas en acero quirúrgico hipoalergénico con baño de oro. Hecho a mano.',
+    id:'p1', slug:'aros-corazones-acero',
+    nombre:'Aros Corazones - Acero', 
+    descripcion:'Aros con diseño de corazón en arcilla y pasador de acero quirúrgico.',
     categoria:'aros', material:'acero', precio:18990, stock:15,
     size: 'pequeno', 
-    variantes:[{sku:'P1-ACERO', material:'acero', talla:'Única', color:'dorado', precio:18990, stock:15}],
-    media:[{url:'assets/aros1.jpg', alt:'Aros Aurora'}],
+    variantes:[{sku:'P1-COR', material:'acero', talla:'Única', color:'rojo', precio:18990, stock:15}],
+    // AQUÍ ESTÁ EL CAMBIO: Ruta relativa
+    media:[{url:'assets/Aros_Corazones.png', alt:'Aros Corazones'}], 
     tags:['best-seller','hipoalergenico'], rating:4.8, reviews: 42
   },
   {
-    id:'p2', slug:'collar-luna-arcilla',
-    nombre:'Collar Luna - Arcilla',
-    descripcion:'Collar con dije luna, arcilla polimérica y cadena de acero inoxidable.',
+    id:'p2', slug:'collar-flores-amarillas',
+    nombre:'Collar Flores Amarillas',
+    descripcion:'Collar delicado con flores amarillas en arcilla polimérica.',
     categoria:'collares', material:'arcilla', precio:15990, stock:12,
     size: 'mediano', 
-    variantes:[{sku:'P2-ARC', material:'arcilla', talla:'45cm', color:'bicolor', precio:15990, stock:12}],
-    media:[{url:'assets/collar1.jpg', alt:'Collar Luna'}],
+    variantes:[{sku:'P2-AMA', material:'arcilla', talla:'45cm', color:'amarillo', precio:15990, stock:12}],
+    media:[{url:'assets/Collar_Flores_Amarillas.png', alt:'Collar Flores'}],
     tags:['lifestyle','regalo'], rating:4.7, reviews: 18
   },
   {
-    id:'p3', slug:'anillo-aurum-bano-oro',
-    nombre:'Anillo Aurum - Baño de Oro',
-    descripcion:'Anillo ajustable base cobre con baño de oro 18k y detalles en arcilla.',
+    id:'p3', slug:'argollas-flores-azules',
+    nombre:'Argollas Flores Azules',
+    descripcion:'Argollas con flores azules moldeadas a mano. Diseño exclusivo.',
     categoria:'argollas', material:'bano-oro', precio:22990, stock:8,
     size: 'pequeno', 
-    variantes:[{sku:'P3-ORO-6', material:'bano-oro', talla:'6', color:'dorado', precio:22990, stock:3},
-              {sku:'P3-ORO-7', material:'bano-oro', talla:'7', color:'dorado', precio:22990, stock:3}],
-    media:[{url:'assets/anillo1.jpg', alt:'Anillo Aurum'}],
+    variantes:[{sku:'P3-AZUL', material:'bano-oro', talla:'Única', color:'azul', precio:22990, stock:3}],
+    media:[{url:'assets/Argollas_Flores_Azules.png', alt:'Argollas Azules'}],
     tags:['nuevo'], rating:4.6, reviews: 11
   },
   {
-    id:'p4', slug:'aros-flores-arcilla',
-    nombre:'Aros Flores Primavera',
-    descripcion:'Diseño floral esculpido en arcilla polimérica. Pasador de acero.',
+    id:'p4', slug:'argollas-multicolor',
+    nombre:'Argollas Flores Multicolor',
+    descripcion:'Explosión de colores en arcilla polimérica. Pasador de acero.',
     categoria:'aros', material:'arcilla', precio:12990, stock:20,
     size: 'grande', 
-    variantes:[{sku:'P4-FLO', material:'arcilla', talla:'Única', color:'rosa', precio:12990, stock:20}],
-    media:[{url:'assets/placeholder.jpg', alt:'Aros Flores'}],
+    variantes:[{sku:'P4-MULTI', material:'arcilla', talla:'Única', color:'multicolor', precio:12990, stock:20}],
+    media:[{url:'assets/Argollas_Flores_Multicolor.png', alt:'Aros Multicolor'}],
     tags:['colorido'], rating:5.0, reviews: 5
   }
 ];

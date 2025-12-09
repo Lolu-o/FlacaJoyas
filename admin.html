@@ -21,7 +21,7 @@
         <option value="collares">Collares</option>
       </select>
       <select id="n-mat" class="input">
-        <option value="plata">Plata 925</option><option value="arcilla">Arcilla polimérica</option>
+        <option value="arcilla">Arcilla polimérica</option>
       </select>
       
       <select id="n-size" class="input">
@@ -69,7 +69,7 @@
     document.getElementById('n-nombre').value = '';
     document.getElementById('n-slug').value = '';
     document.getElementById('n-cat').value = 'aros';
-    document.getElementById('n-mat').value = 'plata';
+    document.getElementById('n-mat').value = 'arcilla';
     document.getElementById('n-size').value = '';
     document.getElementById('n-precio').value = '';
     document.getElementById('n-desc').value = '';
@@ -143,7 +143,7 @@
         size: document.getElementById('n-size').value,
         precio: parseInt(document.getElementById('n-precio').value||0,10),
         stock: 10, // Nota: esto resetea el stock y variantes, consistente con la lógica de "crear"
-        variantes:[{sku:'SKU-'+Date.now(), material:document.getElementById('n-mat').value, talla:'Única', color:'plata', precio: parseInt(document.getElementById('n-precio').value||0,10), stock:10}],
+        variantes:[{sku:'SKU-'+Date.now(), material:document.getElementById('n-mat').value, talla:'Única', color:'unico', precio: parseInt(document.getElementById('n-precio').value||0,10), stock:10}],
         media:[{url: imgUrl, alt: nombre}], 
         tags:[], rating:5, reviews:0 // Resetea tags y rating
       };

@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Las Flacas Joyas — Hecho a mano en Chile</title>
-  <meta name="description" content="Joyas artesanales: plata 925 y arcilla polimérica. Hechas a mano en Chile.">
+  <meta name="description" content="Joyas artesanales: Arcilla polimérica. Hechas a mano en Chile.">
   <meta property="og:title" content="Las Flacas Joyas">
-  <meta property="og:description" content="Plata 925, arcilla polimérica, amor por el detalle.">
+  <meta property="og:description" content="Arcilla polimérica, amor por el detalle.">
   <meta property="og:type" content="website">
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -127,7 +127,7 @@
           <div id="tab-login" class="tab active" aria-labelledby="accTitle">
             <h3 id="accTitle" class="title">Iniciar sesión</h3>
             <p class="muted">Accede con tu email y contraseña.</p>
-            <form onsubmit="event.preventDefault();alert('Login simulado. Integra tu backend.');">
+            <form>
               <div class="field">
                 <label for="loginEmail">Email</label>
                 <input id="loginEmail" type="text" autocomplete="username" placeholder="Email o Usuario" required />
@@ -152,7 +152,7 @@
           <div id="tab-register" class="tab" aria-label="Registro">
             <h3 class="title">Crear cuenta</h3>
             <p class="muted">Crea tu cuenta para comprar y seguir tus pedidos.</p>
-            <form onsubmit="event.preventDefault();alert('Registro simulado. Integra tu backend.');">
+            <form onsubmit="event.preventDefault();alert('Registro simulado...');">
               <div class="field"><label for="regName">Nombre</label><input id="regName" required /></div>
               <div class="field"><label for="regEmail">Email</label><input id="regEmail" type="email"
                   autocomplete="email" required /></div>
@@ -192,10 +192,10 @@
 
   <div class="toast" role="status" aria-live="polite"></div>
 
-  <footer class="footer">
+<footer class="footer">
     <div class="container footer-grid">
       <div><strong>Las Flacas Joyas</strong>
-        <p class="muted">Plata 925 y arcilla polimérica. Hecho a mano en Chile.</p>
+        <p class="muted">Diseños únicos en arcilla polimérica. Hecho a mano en Chile.</p>
       </div>
       <div>
         <small class="muted">Ayuda</small><br>
@@ -209,11 +209,10 @@
       <div>
         <small class="muted">Cuenta</small><br>
         <a href="cuenta.html">Ingresar / Registro</a><br>
-        <a href="wishlist.html">Wishlist</a>
+        <a href="wishlist.html">Wishlist</a> 
       </div>
     </div>
-  </footer>
-
+</footer>
 
   <script src="app.js"></script>
   <script>
