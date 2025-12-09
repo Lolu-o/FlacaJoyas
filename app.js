@@ -12,12 +12,12 @@ const LS_KEYS = {
 // --- Seed de productos
 const seedProducts = [
   {
-    id:'p1', slug:'aros-corazones-acero',
-    nombre:'Aros Corazones - Acero', 
-    descripcion:'Aros con diseño de corazón en arcilla y pasador de acero quirúrgico.',
-    categoria:'aros', material:'acero', precio:18990, stock:15,
+    id:'p1', slug:'aros-corazones',
+    nombre:'Aros Corazones - arcilla', 
+    descripcion:'Aros con diseño de corazón en arcilla.',
+    categoria:'aros', material:'arcilla', precio:18990, stock:15,
     size: 'pequeno', 
-    variantes:[{sku:'P1-COR', material:'acero', talla:'Única', color:'rojo', precio:18990, stock:15}],
+    variantes:[{sku:'P1-COR', material:'arcilla', talla:'Única', color:'rojo', precio:18990, stock:15}],
     // AQUÍ ESTÁ EL CAMBIO: Ruta relativa
     media:[{url:'assets/Aros_Corazones.png', alt:'Aros Corazones'}], 
     tags:['best-seller','hipoalergenico'], rating:4.8, reviews: 42
@@ -36,21 +36,11 @@ const seedProducts = [
     id:'p3', slug:'argollas-flores-azules',
     nombre:'Argollas Flores Azules',
     descripcion:'Argollas con flores azules moldeadas a mano. Diseño exclusivo.',
-    categoria:'argollas', material:'bano-oro', precio:22990, stock:8,
+    categoria:'argollas', material:'arcilla', precio:22990, stock:8,
     size: 'pequeno', 
-    variantes:[{sku:'P3-AZUL', material:'bano-oro', talla:'Única', color:'azul', precio:22990, stock:3}],
+    variantes:[{sku:'P3-AZUL', material:'arcilla', talla:'Única', color:'azul', precio:22990, stock:3}],
     media:[{url:'assets/Argollas_Flores_Azules.png', alt:'Argollas Azules'}],
     tags:['nuevo'], rating:4.6, reviews: 11
-  },
-  {
-    id:'p4', slug:'argollas-multicolor',
-    nombre:'Argollas Flores Multicolor',
-    descripcion:'Explosión de colores en arcilla polimérica. Pasador de acero.',
-    categoria:'aros', material:'arcilla', precio:12990, stock:20,
-    size: 'grande', 
-    variantes:[{sku:'P4-MULTI', material:'arcilla', talla:'Única', color:'multicolor', precio:12990, stock:20}],
-    media:[{url:'assets/Argollas_Flores_Multicolor.png', alt:'Aros Multicolor'}],
-    tags:['colorido'], rating:5.0, reviews: 5
   }
 ];
 
